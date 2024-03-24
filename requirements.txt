@@ -2,4 +2,4 @@ numpy
 tensorflow
 mediapipe
 opencv-python
-os
+tempfile
