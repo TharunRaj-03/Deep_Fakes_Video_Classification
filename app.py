@@ -3,7 +3,7 @@ import numpy as np
 import mediapipe as mp
 import tensorflow as tf
 import streamlit as st
-import os
+import tempfile
 
 # Initialize MediaPipe Face Detection
 mp_face_detection = mp.solutions.face_detection
@@ -68,11 +68,11 @@ def main():
     if uploaded_file is not None:
         with st.spinner('Processing video...'):
             # Temporarily save the uploaded video
-            with open("temp_video.mp4", "wb") as f:
-                f.write(uploaded_file.getvalue())
+            temp_video_file = tempfile.NamedTemporaryFile(delete=False)
+            temp_video_file.write(uploaded_file.getvalue())
 
             # Extract faces from the uploaded video
-            frames = extract_faces_from_video("temp_video.mp4")
+            frames = extract_faces_from_video(temp_video_file.name)
 
             # Load the pre-trained model
             model = tf.keras.models.load_model('final_model_conv_3d')
@@ -91,8 +91,8 @@ def main():
     # Remove the temporarily saved video file
     if uploaded_file is None:
         try:
-            os.remove("temp_video.mp4")
-        except FileNotFoundError:
+            temp_video_file.close()
+        except NameError:
             pass
 
 if __name__ == "__main__":
