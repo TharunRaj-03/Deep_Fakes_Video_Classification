@@ -75,7 +75,7 @@ def main():
             frames = extract_faces_from_video(temp_video_file.name)
 
             # Load the pre-trained model
-            model = tf.keras.models.load_model('final_model_conv_3d')
+            model = tf.keras.models.load_model('final_model_conv_3d_h5.h5')
 
             # Perform classification
             if frames:
